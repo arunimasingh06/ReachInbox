@@ -1,0 +1,29 @@
+node_modules/
+
+# Environment variables / secrets
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+
+# Build output
+dist/
+build/
+coverage/
+
+# Docker
+*.pid
+
+# IDE
+.vscode/
+.idea/
+
+# Temporary files
+tmp/
+temp/

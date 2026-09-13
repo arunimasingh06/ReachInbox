@@ -1,0 +1,80 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum EmailStatus {
+  PENDING
+  SCHEDULED
+  PROCESSING
+  SENT
+  FAILED
+}
+
+model User {
+  id               String            @id @default(uuid())
+  email            String            @unique
+  name             String?
+  avatar           String?
+  googleId         String?           @unique
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  emails           Email[]
+  senders          Sender[]
+  slackIntegration SlackIntegration?
+}
+
+model Sender {
+  id        String   @id @default(uuid())
+  email     String
+  name      String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, email])
+}
+
+model Email {
+  id                 String      @id @default(uuid())
+  userId             String
+  user               User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  senderEmail        String
+  recipientEmail     String
+  subject            String
+  body               String      @db.Text
+  scheduledTime      DateTime
+  delayBetweenEmails Int         @default(2) // minimum seconds between sends for this sender
+  hourlyLimit        Int         @default(100) // max emails allowed per hour for this sender
+  status             EmailStatus @default(SCHEDULED)
+  sentAt             DateTime?
+  error              String?     @db.Text
+  jobId              String?
+  etherealMessageId  String?
+  etherealPreviewUrl String?
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @updatedAt
+
+  @@index([status])
+  @@index([scheduledTime])
+  @@index([userId])
+  @@index([senderEmail])
+}
+
+model SlackIntegration {
+  id                 String   @id @default(uuid())
+  userId             String   @unique
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  teamId             String?
+  teamName           String?
+  incomingWebhookUrl String?
+  accessToken        String?
+  channel            String?
+  channelId          String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
