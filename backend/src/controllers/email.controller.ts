@@ -236,7 +236,7 @@ export async function searchEmails(req: AuthenticatedRequest, res: Response): Pr
 
 export async function cancelScheduledEmail(req: AuthenticatedRequest, res: Response): Promise<void> {
   const userId = req.user?.id;
-  const emailId = req.params.id;
+  const emailId = String(req.params.id);
 
   if (!userId) {
     res.status(401).json({ error: 'Unauthorized' });
