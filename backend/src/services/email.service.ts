@@ -34,9 +34,19 @@ export async function initEmailTransporter(): Promise<nodemailer.Transporter> {
   }
 
   // Verify connection configuration
+  // Verify connection configuration, but don't prevent the API
+// from starting if the SMTP server is temporarily unreachable.
+try {
   await transporter.verify();
   console.log('[EmailService] Ethereal SMTP transporter verified successfully.');
-  return transporter;
+} catch (error: any) {
+  console.warn(
+    '[EmailService] SMTP verification failed, but the API will continue:',
+    error.message
+  );
+}
+
+return transporter;
 }
 
 export interface SendMailOptions {
