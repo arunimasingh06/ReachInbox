@@ -171,7 +171,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
         {/* Live BullMQ Queue Link */}
         <a
-          href="http://localhost:5001/admin/queues"
+          href={`${import.meta.env.VITE_API_BASE_URL}/admin/queues`}
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center justify-between p-2.5 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 border border-slate-200/50 transition-colors"
