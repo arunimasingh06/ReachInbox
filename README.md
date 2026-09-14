@@ -5,6 +5,20 @@ A production-grade, distributed email scheduling service and real-time dashboard
 Designed for reliable, resilient scheduling and sending of emails at scale under high load, network partitions, and server restarts without losing jobs, dropping requests, or sending duplicate emails.
 
 ---
+## 🚀 Deployment
+
+The ReachInbox Scheduler has been deployed on Render.
+
+### Live Application
+
+**Frontend:**
+https://reach-inbox-14hr.onrender.com
+
+**Backend API:**  
+https://reachinbox-094n.onrender.com
+
+The frontend communicates with the deployed backend API to handle authentication, email scheduling, queue management, and other backend operations.
+---
 
 ## Architecture Overview
 
